@@ -73,14 +73,14 @@ def show_points(coords, labels, ax, marker_size=375):
     ax.scatter(neg_points[:, 0], neg_points[:, 1], color='red', marker='*', s=marker_size, edgecolor='white', linewidth=1.25)
 
 
-def show_masks_on_image(raw_image, masks, scores):
+'''def show_masks_on_image(raw_image, masks, scores):
     if len(masks.shape) == 4:
       masks = masks.squeeze()
     if scores.shape[0] == 1:
       scores = scores.squeeze()
 
     nb_predictions = scores.shape[-1]
-    fig, axes = plt.subplots(1, nb_predictions, figsize=(15, 15))
+    fig, axes = plt.subplots(1, nb_predictions, figsize=(25, 25))
 
     for i, (mask, score) in enumerate(zip(masks, scores)):
       mask = mask.cpu().detach()
@@ -88,4 +88,39 @@ def show_masks_on_image(raw_image, masks, scores):
       show_mask(mask, axes[i])
       axes[i].title.set_text(f"Mask {i+1}, Score: {score.item():.3f}")
       axes[i].axis("off")
+    plt.show()'''
+
+def show_mask(mask, ax, mask_color=[0, 0, 255], alpha=0.5):
+    """
+    Show a colored mask on the given Axes object.
+
+    Parameters:
+    mask (np.array): Binary mask array.
+    ax (matplotlib.axes.Axes): Axes object to plot on.
+    mask_color (list): BGR color for the mask. Default is blue.
+    alpha (float): Transparency factor for the mask. Default is 0.5.
+    """
+    # Create an RGB version of the mask
+    mask_rgb = np.zeros((mask.shape[0], mask.shape[1], 3), dtype=np.uint8)
+    mask_rgb[mask == 1] = mask_color
+
+    # Overlay the mask on the image
+    ax.imshow(mask_rgb, alpha=alpha)
+
+# Update the show_masks_on_image function to use the modified show_mask
+def show_masks_on_image(raw_image, masks, scores):
+    if len(masks.shape) == 4:
+        masks = masks.squeeze()
+    if scores.shape[0] == 1:
+        scores = scores.squeeze()
+
+    nb_predictions = scores.shape[-1]
+    fig, axes = plt.subplots(1, nb_predictions, figsize=(25, 25))
+
+    for i, (mask, score) in enumerate(zip(masks, scores)):
+        mask = mask.cpu().detach().numpy()
+        axes[i].imshow(np.array(raw_image))
+        show_mask(mask, axes[i])  # Use the modified show_mask here
+        axes[i].title.set_text(f"Mask {i+1}, Score: {score.item():.3f}")
+        axes[i].axis("off")
     plt.show()
