@@ -5,7 +5,7 @@ def show_mask(mask, ax, random_color=False):
     if random_color:
         color = np.concatenate([np.random.random(3), np.array([0.6])], axis=0)
     else:
-        color = np.array([30/255, 144/255, 255/255, 0.6])
+        color = np.array([30/255, 255/255, 255/255, 0.6])
     h, w = mask.shape[-2:]
     mask_image = mask.reshape(h, w, 1) * color.reshape(1, 1, -1)
     ax.imshow(mask_image)
@@ -73,7 +73,7 @@ def show_points(coords, labels, ax, marker_size=375):
     ax.scatter(neg_points[:, 0], neg_points[:, 1], color='red', marker='*', s=marker_size, edgecolor='white', linewidth=1.25)
 
 
-'''def show_masks_on_image(raw_image, masks, scores):
+def show_masks_on_image(raw_image, masks, scores):
     if len(masks.shape) == 4:
       masks = masks.squeeze()
     if scores.shape[0] == 1:
@@ -88,9 +88,9 @@ def show_points(coords, labels, ax, marker_size=375):
       show_mask(mask, axes[i])
       axes[i].title.set_text(f"Mask {i+1}, Score: {score.item():.3f}")
       axes[i].axis("off")
-    plt.show()'''
+    plt.show()
 
-def show_mask(mask, ax, mask_color=[0, 0, 255], alpha=0.5):
+'''def show_mask(mask, ax, mask_color=[0, 0, 255], alpha=0.5):
     """
     Show a colored mask on the given Axes object.
 
@@ -123,4 +123,4 @@ def show_masks_on_image(raw_image, masks, scores):
         show_mask(mask, axes[i])  # Use the modified show_mask here
         axes[i].title.set_text(f"Mask {i+1}, Score: {score.item():.3f}")
         axes[i].axis("off")
-    plt.show()
+    plt.show()'''
